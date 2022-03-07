@@ -68,19 +68,56 @@ var displayWeather = function (weatherData) {
     "Wind Speed: " + weatherData.wind.speed.toFixed(1) + " mph"
   );
 
-  // use lat & lon to make get uvi
+  // use lat & lon to make get uvi and 5-day forecast
   fetch(
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
       weatherData.coord.lat +
       "&lon=" +
       weatherData.coord.lon +
-      "&appid=a42b1bffc45c35fcb28a1fcc1fc29685"
+      "&appid=a42b1bffc45c35fcb28a1fcc1fc29685&units=imperial"
   ).then(function (response) {
     response.json().then(function (data) {
       // display the uv index value
       $("#current-weather-uvi").text("UVI Index: " + data.current.uvi);
+
+      // display 5-day forecast
+      displayForecast(data);
     });
   });
+};
+
+var displayForecast = function (data) {
+  $("#forecast-title").text("5-Day Forecast:");
+
+  // clear any previous entries in the five-day forecast
+  $("#forecast").empty();
+
+  // get data for 5 days
+  for (i = 1; i <= 5; i++) {
+    // insert data into my day forecast card template
+    var fiveDayCard =
+      `
+                    <div class="col-md-2 m-2 py-3 card text-white bg-primary">
+                        <div class="card-body p-1">
+                            <h5 class="card-title">` +
+      dayjs(data.daily[i].dt * 1000).format("MM/DD/YYYY") +
+      `</h5>
+                            <img src="https://openweathermap.org/img/wn/` +
+      data.daily[i].weather[0].icon +
+      `.png" alt="rain">
+                            <p class="card-text">Temp: ` +
+      data.daily[i].temp.day.toFixed(1) +
+      `°F</p>
+                            <p class="card-text">Humidity: ` +
+      data.daily[i].humidity +
+      `</p>
+                        </div>
+                    </div>
+                    `;
+
+    // append the day to the five-day forecast
+    $("#forecast").append(fiveDayCard);
+  }
 };
 
 // add event listeners to forms
