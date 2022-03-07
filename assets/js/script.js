@@ -1,7 +1,8 @@
 var cityFormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city");
 var weatherContainerEl = document.querySelector("#weather-container");
-var citySearchTerm = document.querySelector("city-search-term");
+var currentWeatherTitle = document.querySelector("#current-weather-title");
+var forecastTitle = document.querySelector("#forecast-title");
 
 var formSubmitHandler = function (event) {
   // prevent page from refreshing
@@ -44,4 +45,8 @@ var getCityWeather = function (city) {
     .catch(function (error) {
       alert("Unable to connect to OpenWeather");
     });
+};
+
+var displayWeather = function (weatherData) {
+  
 };
