@@ -3,6 +3,10 @@ var cityInputEl = document.querySelector("#city");
 var weatherContainerEl = document.querySelector("#weather-container");
 var cityTitleEl = document.querySelector("#current-weather-title");
 var forecastTitle = document.querySelector("#forecast-title");
+var searchedCity = "";
+
+// array to hold search history
+var searchedCities = [];
 
 var getCityWeather = function (city) {
   // format OpenWeather api url
@@ -84,6 +88,10 @@ var displayWeather = function (weatherData) {
       displayForecast(data);
     });
   });
+
+  // save the city
+  searchedCity = weatherData.name;
+  saveSearchedCities(weatherData.name);
 };
 
 var displayForecast = function (data) {
@@ -134,6 +142,21 @@ var displayForecast = function (data) {
     $("#forecast").append(cardDiv);
   }
 };
+
+// save searched cities to local storage
+var saveSearchedCities = function (city) {
+  if (!searchedCities.includes(city)) {
+    searchedCities.push(city);
+  }
+
+  localStorage.setItem("searchHistory", JSON.stringify(searchedCities));
+  localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
+};
+
+// load searched cities
+var loadSearchedCities = function () {
+  searchedCities = JSON.parse(local.Storage.)
+}
 
 // add event listeners to forms
 $("#search").on("click", formSubmitHandler);
