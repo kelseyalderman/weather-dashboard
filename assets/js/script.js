@@ -94,29 +94,44 @@ var displayForecast = function (data) {
 
   // get data for 5 days
   for (i = 1; i <= 5; i++) {
-    // insert data into my day forecast card template
-    var fiveDayCard =
-      `
-                    <div class="col-md-2 m-2 py-3 card text-white bg-primary">
-                        <div class="card-body p-1">
-                            <h5 class="card-title">` +
-      dayjs(data.daily[i].dt * 1000).format("MM/DD/YYYY") +
-      `</h5>
-                            <img src="https://openweathermap.org/img/wn/` +
-      data.daily[i].weather[0].icon +
-      `.png" alt="rain">
-                            <p class="card-text">Temp: ` +
-      data.daily[i].temp.day.toFixed(1) +
-      `°F</p>
-                            <p class="card-text">Humidity: ` +
-      data.daily[i].humidity +
-      `</p>
-                        </div>
-                    </div>
-                    `;
+    // create elements div elements for daily weather card
+    var cardDiv = $("<div>").addClass(
+      "col-md-2 m-2 py-3 card text-white bg-primary"
+    );
+    var cardBodyDiv = $("<div>").addClass("card-body p-1");
 
-    // append the day to the five-day forecast
-    $("#forecast").append(fiveDayCard);
+    // apend card body div to parent card div
+    cardDiv.append(cardBodyDiv);
+
+    // create elements for daily weather card content
+    var cardTitle = $("<h5>")
+      .addClass("card-title")
+      .text(dayjs(data.daily[i].dt * 1000).format("MM/DD/YYYY"));
+
+    let imgSrc =
+      "https://openweathermap.org/img/wn/" +
+      data.daily[i].weather[0].icon +
+      ".png";
+
+    var cardImg = $("<img>").attr("src", imgSrc).attr("alt", "weather-icon");
+
+    var cardTemp = $("<p>")
+      .addClass("card-text")
+      .text("Temp: " + data.daily[i].temp.day.toFixed(1) + " °F");
+
+    var cardWind = $("<p>")
+      .addClass("card-text")
+      .text("Wind: " + data.daily[i].wind_speed + " MPH");
+
+    var cardHumidity = $("<p>")
+      .addClass("card-text")
+      .text("Humidity: " + data.daily[i].humidity + "%");
+
+    // append content elements to parent div
+    cardBodyDiv.append(cardTitle, cardImg, cardTemp, cardWind, cardHumidity);
+
+    //append cards to parent forecast div on the page
+    $("#forecast").append(cardDiv);
   }
 };
 
