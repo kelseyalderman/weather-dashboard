@@ -188,5 +188,12 @@ var loadSearchedCities = function () {
 
 loadSearchedCities();
 
-// add event listeners to forms
+// event handlers
 $("#search").on("click", formSubmitHandler);
+
+$("#saved-cities").on("click", function (event) {
+  // get button id
+  let selectedCity = $(event.target).closest("button").attr("id");
+  // pass id through getCityWeather
+  getCityWeather(selectedCity);
+});
